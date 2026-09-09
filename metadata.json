@@ -1,0 +1,8 @@
+{
+  "name": "CRM Dashboard - Dra Michelli",
+  "description": "Dashboard de saúde do CRM para tomada de decisão estratégica, integrado ao Metabase com atualização automática a cada 10 minutos e exportação PDF.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
