@@ -77,14 +77,15 @@ export const Header: React.FC<HeaderProps> = ({
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700/80 flex items-center justify-center overflow-hidden shadow-inner shrink-0">
                 <img 
-                  src={logoImg || '/logofq.png'} 
+                  src={logoImg || `${import.meta.env.BASE_URL}logofq.png`} 
                   alt="Logo FQ" 
                   className="w-full h-full object-contain rounded-full"
                   referrerPolicy="no-referrer"
                   onError={(e) => {
                     const target = e.currentTarget;
-                    if (target.src !== window.location.origin + '/logofq.svg') {
-                      target.src = '/logofq.svg';
+                    const fallback = `${import.meta.env.BASE_URL}logofq.svg`;
+                    if (!target.src.endsWith(fallback)) {
+                      target.src = fallback;
                     }
                   }}
                 />
