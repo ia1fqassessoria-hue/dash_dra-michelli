@@ -3,9 +3,16 @@ services:
   app:
     image: node:20-alpine
     working_dir: /app
-    volumes:
-      - .:/app
-    command: sh -c "npm install --omit=dev && npm run start"
+    command: >
+      sh -c "
+      if [ ! -d '.git' ]; then
+        apk add --no-cache git && git clone https://github.com/ia1fqassessoria-hue/dra_michelli.git . ;
+      else
+        git pull || true;
+      fi &&
+      npm install --omit=dev &&
+      npm run start
+      "
     ports:
       - "3000:3000"
     environment:
