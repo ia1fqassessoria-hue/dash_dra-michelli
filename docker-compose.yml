@@ -1,11 +1,13 @@
 version: '3.8'
 services:
   app:
-    image: ghcr.io/ia1fqassessoria-hue/dra_michelli:latest
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: sh -c "npm install --omit=dev && npm run start"
     ports:
       - "3000:3000"
     environment:
       - NODE_ENV=production
-      # - METABASE_BASE_URL=https://metabase.grupofq.com
-      # - METABASE_API_KEY=mb_tPBib47vdkmuYcA8lzFFzIx76bAt9gwnZTYKOmivMTY=
     restart: unless-stopped
