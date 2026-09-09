@@ -16,6 +16,7 @@ export default defineConfig(() => {
         '~': path.resolve(__dirname, '.'),
       },
     },
+    base: process.env.BASE_PATH || '/',
     build: {
       outDir: 'dist',
       emptyOutDir: false,

@@ -9,7 +9,8 @@ export async function fetchMetabaseCardInfo(cardId: number): Promise<any | null>
     return cardInfoCache.get(cardId);
   }
   try {
-    const res = await fetch(`/api/metabase/card/${cardId}`);
+    const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+    const res = await fetch(`${basePath}/api/metabase/card/${cardId}`);
     if (!res.ok) return null;
     const data = await res.json();
     cardInfoCache.set(cardId, data);
@@ -178,7 +179,8 @@ export function buildCardParameters(
 
 export async function checkMetabaseStatus(): Promise<MetabaseConnectionStatus> {
   try {
-    const res = await fetch('/api/metabase/status');
+    const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+    const res = await fetch(`${basePath}/api/metabase/status`);
     if (!res.ok) {
       return {
         connected: false,
@@ -191,14 +193,15 @@ export async function checkMetabaseStatus(): Promise<MetabaseConnectionStatus> {
     return {
       connected: false,
       baseUrl: 'https://metabase.grupofq.com',
-      error: err.message || 'Falha ao conectar à API do backend/Metabase',
+      error: err.message || 'Falha ao conectar  API do backend/Metabase',
     };
   }
 }
 
 export async function fetchMetabaseCards(): Promise<MetabaseCard[]> {
   try {
-    const res = await fetch('/api/metabase/cards');
+    const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+    const res = await fetch(`${basePath}/api/metabase/cards`);
     if (!res.ok) return [];
     const data = await res.json();
     return Array.isArray(data) ? data : [];
@@ -209,7 +212,8 @@ export async function fetchMetabaseCards(): Promise<MetabaseCard[]> {
 
 export async function queryMetabaseCard(cardId: number, parameters: any[] = []): Promise<MetabaseCardQueryResponse | null> {
   try {
-    const res = await fetch(`/api/metabase/card/${cardId}/query`, {
+    const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+    const res = await fetch(`${basePath}/api/metabase/card/${cardId}/query`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ parameters }),

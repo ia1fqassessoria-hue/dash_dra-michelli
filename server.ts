@@ -54,7 +54,7 @@ async function fetchMetabase(endpoint: string, options: RequestInit = {}) {
 }
 
 // API Routes
-app.get("/api/metabase/status", async (_req, res) => {
+app.get(`${process.env.BASE_PATH || ""}/api/metabase/status`, async (_req, res) => {
   const startTime = Date.now();
   // Try fetching user or cards to verify API key
   const result = await fetchMetabase("/api/card");
@@ -87,7 +87,7 @@ app.get("/api/metabase/status", async (_req, res) => {
   }
 });
 
-app.get("/api/metabase/cards", async (_req, res) => {
+app.get(`${process.env.BASE_PATH || ""}/api/metabase/cards`, async (_req, res) => {
   const result = await fetchMetabase("/api/card");
   if (result.ok) {
     res.json(result.data);
@@ -96,7 +96,7 @@ app.get("/api/metabase/cards", async (_req, res) => {
   }
 });
 
-app.get("/api/metabase/dashboards", async (_req, res) => {
+app.get(`${process.env.BASE_PATH || ""}/api/metabase/dashboards`, async (_req, res) => {
   const result = await fetchMetabase("/api/dashboard");
   if (result.ok) {
     res.json(result.data);
@@ -105,7 +105,7 @@ app.get("/api/metabase/dashboards", async (_req, res) => {
   }
 });
 
-app.post("/api/metabase/card/:id/query", async (req, res) => {
+app.post(`${process.env.BASE_PATH || ""}/api/metabase/card/:id/query`, async (req, res) => {
   const cardId = req.params.id;
   const { parameters } = req.body || {};
   
@@ -122,7 +122,7 @@ app.post("/api/metabase/card/:id/query", async (req, res) => {
   }
 });
 
-app.get("/api/metabase/card/:id", async (req, res) => {
+app.get(`${process.env.BASE_PATH || ""}/api/metabase/card/:id`, async (req, res) => {
   const cardId = req.params.id;
   const result = await fetchMetabase(`/api/card/${cardId}`);
   if (result.ok) {
@@ -139,11 +139,11 @@ async function startServer() {
       server: { middlewareMode: true },
       appType: "spa",
     });
-    app.use(vite.middlewares);
+    app.use(process.env.BASE_PATH || "/", vite.middlewares);
   } else {
     const distPath = path.join(process.cwd(), "dist");
-    app.use(express.static(distPath));
-    app.get("*", (_req, res) => {
+    app.use(process.env.BASE_PATH || "/", express.static(distPath));
+    app.get(`${process.env.BASE_PATH || ""}*`, (_req, res) => {
       res.sendFile(path.join(distPath, "index.html"));
     });
   }
