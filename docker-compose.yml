@@ -5,9 +5,14 @@ services:
     working_dir: /app
     command: >
       sh -c "
+      if [ -z \"$$GIT_TOKEN\" ]; then
+        echo 'Error: GIT_TOKEN is not set. Cannot clone private repository.'
+        exit 1
+      fi
       if [ ! -d '.git' ]; then
-        apk add --no-cache git && git clone https://github.com/ia1fqassessoria-hue/dra_michelli.git . ;
+        apk add --no-cache git && git clone https://$$GIT_TOKEN@github.com/ia1fqassessoria-hue/dash_dra-michelli.git . ;
       else
+        git remote set-url origin https://$$GIT_TOKEN@github.com/ia1fqassessoria-hue/dash_dra-michelli.git
         git pull || true;
       fi &&
       npm install --omit=dev &&
@@ -18,4 +23,5 @@ services:
     environment:
       - NODE_ENV=production
       - BASE_PATH=/dra-michelli
+      - GIT_TOKEN=${GIT_TOKEN}
     restart: unless-stopped
